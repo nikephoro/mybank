@@ -24,7 +24,7 @@ public class TransactionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getRequestURI().equals("/transactions/create")) {
 
-            Integer amount = Integer.valueOf(request.getParameter("amount"));
+            Double amount = Double.valueOf(request.getParameter("amount"));
             String reference = request.getParameter("reference");
 
             Transaction transaction = trSrv.createTransaction(amount,reference);

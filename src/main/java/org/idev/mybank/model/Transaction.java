@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class Transaction {
 
-    private Integer id;
+    private String id;
 
     private double amount;
 
@@ -17,17 +17,17 @@ public class Transaction {
 
     public Transaction() {}
 
-    public Transaction(Integer amount, String reference) {
+    public Transaction(Double amount, String reference) {
         this.amount = amount;
         this.reference = reference;
 
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

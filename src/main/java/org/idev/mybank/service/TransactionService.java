@@ -15,9 +15,9 @@ public class TransactionService {
 
     private final List<Transaction>  transactions = new CopyOnWriteArrayList<>();
 
-    public Transaction createTransaction(Integer amount, String reference) {
+    public Transaction createTransaction(Double amount, String reference) {
         Transaction transaction = new Transaction(amount, reference);
-        transaction.setId(parseInt(UUID.randomUUID().toString()));
+        transaction.setId(UUID.randomUUID().toString());
         transaction.setTimestamp(LocalDateTime.now());
         transactions.add(transaction);
         return transaction;
@@ -31,7 +31,7 @@ public class TransactionService {
                 return transaction;
             }
         }
-        return new Transaction(0, "Transaction Not Found");
+        return new Transaction(0.0, "Transaction Not Found");
     }
 
 //    public Optional<Transaction> findTransaction(Integer id) {
