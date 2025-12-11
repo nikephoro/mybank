@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 public class Transaction {
 
-    private String id;
+    private Integer id;
 
-    private Integer amount;
+    private double amount;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm'Z'")
     private LocalDateTime timestamp;
@@ -23,15 +23,15 @@ public class Transaction {
 
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 

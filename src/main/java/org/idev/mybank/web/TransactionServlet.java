@@ -11,6 +11,7 @@ import org.idev.mybank.model.Transaction;
 import org.idev.mybank.service.TransactionService;
 
 import java.io.IOException;
+import java.util.List;
 
 public class TransactionServlet extends HttpServlet {
 
@@ -21,7 +22,7 @@ public class TransactionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getRequestURI().equals("/")) {
+        if (request.getRequestURI().equals("/transactions/create")) {
 
             Integer amount = Integer.valueOf(request.getParameter("amount"));
             String reference = request.getParameter("reference");
@@ -35,4 +36,21 @@ public class TransactionServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getRequestURI().equals("/transactions/findAll")) {
+
+            List<Transaction> transactionList = trSrv.findAll();
+
+            response.setContentType("application/json; charset=UTF-8");
+            String jsonRes = objMap.writeValueAsString(transactionList);
+            response.getWriter().print(jsonRes);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+
+    }
+
+
 }
