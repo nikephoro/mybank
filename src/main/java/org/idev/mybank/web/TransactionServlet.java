@@ -1,36 +1,42 @@
 package org.idev.mybank.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.idev.mybank.context.Application;
 import org.idev.mybank.model.Transaction;
-import org.idev.mybank.service.TransactionService;
+import org.idev.mybank.model.User;
 
 import java.io.IOException;
 import java.util.List;
 
-public class TransactionServlet extends HttpServlet {
 
-    private final TransactionService trSrv = new TransactionService();
-    private final ObjectMapper objMap = JsonMapper.builder()
-                                                    .addModule(new JavaTimeModule())
-                                                    .build();
+
+public class TransactionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getRequestURI().equals("/transactions/create")) {
+
+        if (request.getRequestURI().equals("/users/create")) {
+            String name = request.getParameter("name");
+            String id = request.getParameter("id");
+
+            User user = Application.userService.createUser(id,name);
+
+            response.setContentType("application/json; charset=UTF-8");
+            String jsonRes = Application.objMap.writeValueAsString(user);
+            response.getWriter().print(jsonRes);
+
+        } else if (request.getRequestURI().equals("/transactions/create")) {
 
             Double amount = Double.valueOf(request.getParameter("amount"));
             String reference = request.getParameter("reference");
+            String userId = request.getParameter("userId");
 
-            Transaction transaction = trSrv.createTransaction(amount,reference);
+            Transaction transaction = Application.transactionService.createTransaction(amount,reference,userId);
 
             response.setContentType("application/json; charset=UTF-8");
-            String jsonRes = objMap.writeValueAsString(transaction);
+            String jsonRes = Application.objMap.writeValueAsString(transaction);
             response.getWriter().print(jsonRes);
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -41,12 +47,19 @@ public class TransactionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getRequestURI().equals("/transactions/findAll")) {
 
-            List<Transaction> transactionList = trSrv.findAll();
+            List<Transaction> transactionList = Application.transactionService.findAll();
 
             response.setContentType("application/json; charset=UTF-8");
-            String jsonRes = objMap.writeValueAsString(transactionList);
+            String jsonRes = Application.objMap.writeValueAsString(transactionList);
             response.getWriter().print(jsonRes);
-        } else {
+        } else if (request.getRequestURI().equals("/users/findAll")){
+
+            List<User> userList  = Application.userService.findAllUsers();
+
+            response.setContentType("application/json; charset=UTF-8");
+            String jsonRes = Application.objMap.writeValueAsString(userList);
+            response.getWriter().print(jsonRes);
+        } else{
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
 
