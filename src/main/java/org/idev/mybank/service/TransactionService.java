@@ -25,7 +25,7 @@ public class TransactionService {
 
     public List<Transaction> findAll() { return transactions; }
 
-    public Transaction findById(Integer id) {
+    public Transaction findById(String id) {
         for(Transaction transaction : transactions) {
             if (transaction.getId().equals(id)) {
                 return transaction;
